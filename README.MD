@@ -67,3 +67,9 @@ Swagger UI
       required: true
       description: the job id
 ```
+
+### Technologies
+
+- Nodejs
+- Express
+- Mongodb
