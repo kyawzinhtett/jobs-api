@@ -6,14 +6,14 @@ const helmet = require('helmet');
 const cors = require('cors');
 const xss = require('xss-clean');
 const rateLimit = require('express-rate-limit');
-
-const app = express();
-
-// Connect DB
 const connectDB = require('./db/connect');
-
 // Middleware
 const authenticateUser = require('./middleware/authentication');
+
+connectDB();
+
+const app = express();
+const PORT = process.env.PORT || 3000;
 
 // Routers
 const authRouter = require('./routes/auth');
@@ -44,17 +44,6 @@ app.use('/api/v1/jobs', authenticateUser, jobsRouter);
 app.use(notFoundMiddleware);
 app.use(errorHandlerMiddleware);
 
-const port = process.env.PORT || 3000;
-
-const start = async () => {
-  try {
-    await connectDB(process.env.MONGO_URI);
-    app.listen(port, () =>
-      console.log(`Server is listening on port ${port}...`)
-    );
-  } catch (error) {
-    console.log(error);
-  }
-};
-
-start();
+app.listen(PORT, () => {
+  console.log(`Server running on port ${PORT}`);
+});
